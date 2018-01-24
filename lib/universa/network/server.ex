@@ -1,5 +1,5 @@
 defmodule Universa.Network.Server do
-  
+
   def accept(port) do
     {:ok, so_listener} = :gen_tcp.listen(port, [:binary, packet: :line, active: false, reuseaddr: true])
     accept_clients(so_listener)
@@ -13,6 +13,7 @@ defmodule Universa.Network.Server do
 
   defp run_client(socket) do
     socket |> read_client() |> write_client(socket)
+    run_client(socket)
   end
 
   defp read_client(socket) do
