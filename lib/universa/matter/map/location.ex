@@ -1,6 +1,9 @@
 defmodule Universa.Matter.Map.Location do
-  use Agent
+  @moduledoc """
+  This is a single location which contains Entities, so they can affect eachother!
+  """
 
+  use Agent
   # TODO: Convert this to allow systems to work :D
 
   @doc "Initializes the Location."
@@ -39,6 +42,8 @@ defmodule Universa.Matter.Map.Location do
   @doc "Check if this Location has commands for players input."
   def push_input(location_pid, originating_uuid, input_line) do
     # TODO: Actually have a Map of commands in every Location
+
+    # Simple case to get the first word and pass it to code specific to that command.
     case String.split(input_line, " ", parts: 2) do
       ["say" | message] ->
         entity = get(location_pid, originating_uuid)
@@ -46,6 +51,27 @@ defmodule Universa.Matter.Map.Location do
             [Universa.Matter.System.SendLine],
             get(location_pid),
             %{message: "#{entity.name} says, \"#{message}\""})
+
+      ["emote" | message] ->
+              entity = get(location_pid, originating_uuid)
+              Universa.Matter.Entity.System.run(
+                  [Universa.Matter.System.SendLine],
+                  get(location_pid),
+                  %{message: "->#{entity.name} #{message}."})
+
+      ["yawn"] ->
+              entity = get(location_pid, originating_uuid)
+              Universa.Matter.Entity.System.run(
+                  [Universa.Matter.System.SendLine],
+                  get(location_pid),
+                  %{message: "#{entity.name} yawns."})
+
+      ["smile"] ->
+              entity = get(location_pid, originating_uuid)
+              Universa.Matter.Entity.System.run(
+                  [Universa.Matter.System.SendLine],
+                  get(location_pid),
+                  %{message: "#{entity.name} smiles."})
 
       ["date"] ->
         entity = get(location_pid, originating_uuid)
@@ -59,7 +85,7 @@ defmodule Universa.Matter.Map.Location do
         Universa.Matter.Entity.System.run(
             [Universa.Matter.System.SendLine],
             [entity],
-            %{message: "~~~ Commands~~~\r\nsay <message>\r\ndate\r\nhelp\r\n"})
+            %{message: "\n~~~ Commands~~~\r\nsay <message>\r\ndate\r\nhelp\r\n"})
 
       _ -> IO.puts "Unknown command: #{input_line}"
 

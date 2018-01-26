@@ -1,4 +1,7 @@
 defmodule Universa.Network.Supervisor do
+  @moduledoc """
+  This supervisor starts the ListenServer (so we are listening on a port) and a TaskSupervisor that manages all the open connections.
+  """
   use Supervisor
 
   def start_link() do

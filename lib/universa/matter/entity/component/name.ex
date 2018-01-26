@@ -1,6 +1,6 @@
 defmodule Universa.Matter.Entity.Component.Name do
   @moduledoc """
-  This component gives an entity the ability to send events it witnesses back to a socket.
+  This component gives an entity a name, people like names.
   """
   defstruct value: nil
 

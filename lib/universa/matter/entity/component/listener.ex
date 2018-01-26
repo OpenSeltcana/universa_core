@@ -1,8 +1,8 @@
 defmodule Universa.Matter.Entity.Component.Listener do
   @moduledoc """
-  This component gives an entity the ability to send events it witnesses back to a socket.
+  This component holds a socket at the moment, so data can be sent back.
   """
   defstruct value: nil
 
-  def new(uuid_sock), do: %__MODULE__{value: uuid_sock}
+  def new(socket), do: %__MODULE__{value: socket}
 end

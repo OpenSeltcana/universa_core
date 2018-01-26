@@ -7,8 +7,8 @@ defmodule Universa.Network.Account.Importer do
   def load(account_name) do
     # TODO: Actually load rooms from somewhere
     {:ok, %Universa.Network.Account.Info{
-                    name: account_name,
-                    locations: %{"1ebd411d-35d3-43cf-90eb-ceb547884e2d" => nil}}}
+                  name: account_name,
+                  locations: %{"1ebd411d-35d3-43cf-90eb-ceb547884e2d" => nil}}}
   end
 
   @doc "Moves an account from memory to long term storage."

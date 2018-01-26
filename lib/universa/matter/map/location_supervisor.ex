@@ -1,4 +1,7 @@
 defmodule Universa.Matter.Map.LocationSupervisor do
+  @moduledoc """
+  This Supervisor holds all the active Locations.
+  """
   use Supervisor
 
   def start_link(opts) do

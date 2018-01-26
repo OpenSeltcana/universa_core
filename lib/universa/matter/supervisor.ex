@@ -1,4 +1,7 @@
 defmodule Universa.Matter.Supervisor do
+  @moduledoc """
+  This Supervisor starts the Map and LocationSupervisor.
+  """
   use Supervisor
 
   def start_link() do

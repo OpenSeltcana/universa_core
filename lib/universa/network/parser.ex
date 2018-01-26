@@ -3,7 +3,7 @@ defmodule Universa.Network.Parser do
   Converts input from a client into a common format for every parser.
   """
 
-  @doc "Temporary way of solving the command problem."
+  @doc "Temporary way of parsing input from the client."
   def parse(input_line, info, socket) do
     # TODO: Authentication
 

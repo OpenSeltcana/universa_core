@@ -1,4 +1,7 @@
 defmodule Universa.Matter.Map do
+  @moduledoc """
+  This module enables sockets to find the PID for the relevant Location!
+  """
   use GenServer
 
   ## Client API

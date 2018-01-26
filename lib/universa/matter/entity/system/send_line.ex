@@ -1,4 +1,7 @@
 defmodule Universa.Matter.System.SendLine do
+  @moduledoc """
+  This system writes a message back over the socket.
+  """
   @behaviour Universa.Matter.Entity.System
 
   def component_keys, do: [:listener]

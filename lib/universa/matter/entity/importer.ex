@@ -3,7 +3,8 @@ defmodule Universa.Matter.Entity.Importer do
   This module imports the old state of a Entity from long term storage to memory and back.
   """
 
-  @doc "Moves an entity from long term storage to memory."
+  # TODO: Make this true: @doc "Moves an entity from long term storage to memory."
+  # Temporary way of creating Entities.
   def load(uuid_entity, socket, name) do
     # TODO: Actually load rooms from somewhere
     case uuid_entity do
