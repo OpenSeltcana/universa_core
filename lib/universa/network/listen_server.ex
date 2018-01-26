@@ -16,7 +16,8 @@ defmodule Universa.Network.ListenServer do
 
   defp loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
-    {:ok, pid} = Task.Supervisor.start_child(Universa.Network.Connections, fn -> first_serve(client) end)
+    {:ok, pid} = Task.Supervisor.start_child(Universa.Network.Connections,
+                                                  fn -> first_serve(client) end)
     :ok = :gen_tcp.controlling_process(client, pid)
     loop_acceptor(socket)
   end
@@ -28,7 +29,7 @@ defmodule Universa.Network.ListenServer do
 
   defp serve(socket, info) do
     info = case read_line(socket) do
-      {:ok, data} -> Universa.Network.Parser.parse(data, info)
+      {:ok, data} -> Universa.Network.Parser.parse(data, info, socket)
     end
 
     serve(socket, info)

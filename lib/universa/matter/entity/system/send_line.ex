@@ -3,8 +3,8 @@ defmodule Universa.Matter.System.SendLine do
 
   def component_keys, do: [:listener]
 
-  def perform(entity) do
-    #IO.puts entity.name
+  def perform(entity, opts) do
+    :gen_tcp.send(entity.listener.value, "#{opts.message}\r\n> ")
     entity
   end
 end

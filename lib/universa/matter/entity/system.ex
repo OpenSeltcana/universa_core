@@ -22,17 +22,17 @@ defmodule Universa.Matter.Entity.System do
   """
 
   @callback component_keys() :: [atom]
-  @callback perform(pid) :: pid
+  @callback perform(pid, %{}) :: pid
 
   @doc "Run `systems` over `entities`."
   def run([], entities), do: entities
-  def run([system | systems], entities) do
-    run(systems, Enum.map(entities, &iterate(system, &1)))
+  def run([system | systems], entities, opts) do
+    run(systems, Enum.map(entities, &iterate(system, &1, opts)))
   end
 
-  defp iterate(system, entity) do
+  defp iterate(system, entity, opts) do
     if Enum.reduce(system.component_keys, fn(key, okay) -> okay && Map.has_key?(entity, key) end) do
-      system.perform(entity)
+      system.perform(entity, opts)
     else
       entity
     end
