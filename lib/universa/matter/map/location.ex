@@ -24,9 +24,16 @@ defmodule Universa.Matter.Map.Location do
   end
 
   @doc "Puts an entity into the Location by loading it through `Universa.Matter.Entity.Importer`."
-  def spawn(location_pid, uuid_entity, socket) do
-    {:ok, entity} = Universa.Matter.Entity.Importer.load(uuid_entity, socket)
-    set(location_pid, uuid_entity, entity)
+  def spawn(location_pid, uuid_entity, socket, name) do
+    {:ok, entity} = Universa.Matter.Entity.Importer.load(uuid_entity, socket, name)
+    generated_uuid = UUID.uuid1()
+    set(location_pid, generated_uuid, entity)
+    # Send
+    Universa.Matter.Entity.System.run(
+        [Universa.Matter.System.SendLine],
+        get(location_pid),
+        %{message: "#{name} has entered the game."})
+    generated_uuid
   end
 
   @doc "Check if this Location has commands for players input."
@@ -37,7 +44,7 @@ defmodule Universa.Matter.Map.Location do
         entity = get(location_pid, originating_uuid)
         Universa.Matter.Entity.System.run(
             [Universa.Matter.System.SendLine],
-            [entity],
+            get(location_pid),
             %{message: "#{entity.name} says, \"#{message}\""})
 
       ["date"] ->

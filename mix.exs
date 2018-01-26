@@ -23,6 +23,7 @@ defmodule Universa.Mixfile do
   defp deps do
     [
       #{:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false}, # Linter
+      { :uuid, "~> 1.1" }, # Generate UUID's to identify
     ]
   end
 end

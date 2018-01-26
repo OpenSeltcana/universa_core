@@ -4,11 +4,11 @@ defmodule Universa.Matter.Entity.Importer do
   """
 
   @doc "Moves an entity from long term storage to memory."
-  def load(uuid_entity, socket) do
+  def load(uuid_entity, socket, name) do
     # TODO: Actually load rooms from somewhere
     case uuid_entity do
       _ -> {:ok, Universa.Matter.Entity.new([
-        Universa.Matter.Entity.Component.Name.new("Test"),
+        Universa.Matter.Entity.Component.Name.new(name),
         Universa.Matter.Entity.Component.Listener.new(socket)
       ])}
     end

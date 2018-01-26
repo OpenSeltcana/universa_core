@@ -15,12 +15,11 @@ defmodule Universa.Network.Parser do
       # Now for every location we are in, create our player entity
       # TODO: Read the locations from info
       Universa.Matter.Map.create(Universa.Matter.Map, "1ebd411d-35d3-43cf-90eb-ceb547884e2d")
-      lookup "1ebd411d-35d3-43cf-90eb-ceb547884e2d", fn pid ->
-        Universa.Matter.Map.Location.spawn(pid, "test_entity_uuid", socket)
-        entities = Universa.Matter.Map.Location.get(pid)
-        # Test for my sanity, checking if it actually works
-        Universa.Matter.Entity.System.run([Universa.Matter.System.SendLine], entities, %{message: "You entered the game"})
-      end
+      info = %{info | locations: Map.put(info.locations,
+        "1ebd411d-35d3-43cf-90eb-ceb547884e2d",
+        lookup("1ebd411d-35d3-43cf-90eb-ceb547884e2d", fn pid ->
+        Universa.Matter.Map.Location.spawn(pid, "test_entity_uuid", socket, info.name)
+      end))}
     else
       # TODO: Read the locations from info
       IO.inspect info
