@@ -39,4 +39,7 @@ defmodule Dice do
   def roll_die(:d12),  do: Enum.random(1..12)
   def roll_die(:d20),  do: Enum.random(1..20)
   def roll_die(:d100), do: round(Enum.random(0 .. 90) / 10) * 10
+
+  # A cointoss:
+  def roll_die(:coin), do: case Enum.random(0..1), do: (0 -> :heads; 1 -> :tails)
 end
