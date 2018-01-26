@@ -23,7 +23,16 @@ defmodule Universa.Network.ListenServer do
   end
 
   defp first_serve(socket) do
-    write_line(socket, "Concept + Reality = Awesome MUD?\r\n\r\nAnyways, hi there, please enter your name:\r\n")
+    write_line(socket, """
+\x1B[33m      .-  _             _  -.\r
+     /   /  .         .  \\   \\ \x1B[35m    .   .     o\r
+\x1B[33m    (   (  (  \x1B[36m (-o-) \x1B[33m  )  )   ) \x1B[35m   |   |,---...    ,,---.,---.,---.,---.\r
+\x1B[33m     \\   \\_ ` \x1B[36m  |x|\x1B[33m   ` _/   /  \x1B[35m   |   ||   || \\  / |---'|    `---.,---|\r
+\x1B[33m      `-      \x1B[36m  |x|\x1B[33m        -`   \x1B[35m   `---'`   '`  `'  `---'`    `---'`---^\r
+              \x1B[36m  |x|\x1B[39m\r
+\r
+    Enter your nickname:\r
+""")
     serve(socket, nil)
   end
 

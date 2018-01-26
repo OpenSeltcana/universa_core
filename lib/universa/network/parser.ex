@@ -22,7 +22,6 @@ defmodule Universa.Network.Parser do
       end))}
     else
       # TODO: Read the locations from info
-      IO.inspect info
       lookup("1ebd411d-35d3-43cf-90eb-ceb547884e2d", fn pid ->
         Universa.Matter.Map.Location.push_input(
               pid,
