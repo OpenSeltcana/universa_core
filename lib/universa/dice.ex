@@ -6,14 +6,15 @@ defmodule Dice do
   All seven dice from the standard off the shelf set is available using atoms
   to describe their type:
 
-    :d4, :d6 :d8, :d10, :d12, :d100
+    :d4, :d6 :d8, :d10, :d12, :d00
 
   To roll a d20, simply:
     roll(:d20)
 
   More than one :d20 can be rolled at a time, returning a list:
     roll(2, :d20)
-    [15, 12]
+    [15, 12]  def roll_die(:coin), do: case Enum.random(0..1), do: (0 -> :heads; 1 -> :tails)
+
 
   Adding new dice:
 
@@ -29,7 +30,7 @@ defmodule Dice do
   def roll(0, type, acc), do: acc
 
   def roll(count, type, acc) do
-    roll(count - 1, type, [ roll_die(type) ] ++ acc)
+    roll(count - 1, type, [ roll_die(type) | acc ])
   end
 
   def roll_die(:d4),   do: Enum.random(1..4)
@@ -38,7 +39,8 @@ defmodule Dice do
   def roll_die(:d10),  do: Enum.random(1..10)
   def roll_die(:d12),  do: Enum.random(1..12)
   def roll_die(:d20),  do: Enum.random(1..20)
-  def roll_die(:d100), do: round(Enum.random(0 .. 90) / 10) * 10
+  def roll_die(:d00),  do: round(Enum.random(0 .. 90) / 10) * 10
+  def roll_die(:percentile), do: (roll_die(:d00) + roll_die(:d10))
 
   # A cointoss:
   def roll_die(:coin), do: case Enum.random(0..1), do: (0 -> :heads; 1 -> :tails)
