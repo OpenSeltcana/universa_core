@@ -3,12 +3,7 @@ defmodule Universa.Core do
   Documentation for UniversaCore.
   """
 
-  def start(_type, _args) do
-    children = [
-      {Universa.Core.Supervisor, name: Universa.Core.Supervisor}
-    ]
+  use Application
 
-    opts     = [strategy: :one_for_one, name: Universa.Core.Supervisor]
-    Supervisor.start_link(children, opts)
-  end
+  def start(_type, _args), do: Universa.Core.Supervisor.start_link([])
 end
