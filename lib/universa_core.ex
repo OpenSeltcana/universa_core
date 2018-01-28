@@ -8,6 +8,11 @@ defmodule Universa.Core do
   defp options(),  do: [strategy: :one_for_one, name: UniversaCore.Supervisor]
 
   def launch(parser \\ Universa.Core.Parser.That.Aint.There) do
-    :world
+    children = [
+      {Universa.Core.Supervisor, name: Universa.Core.Supervisor}
+    ]
+
+    opts     = [strategy: :one_for_one, name: Universa.Core.Supervisor]
+    Supervisor.start_link(children, opts)
   end
 end
