@@ -16,23 +16,14 @@ defmodule Universa.Core.NetworkServer do
 
   defp loop_acceptor(socket) do
     {:ok, client} = :gen_tcp.accept(socket)
-    {:ok, pid} = Task.Supervisor.start_child(Universa.Network.Connections,
+    {:ok, pid} = Task.Supervisor.start_child(Universa.Core.NetworkConnections,
                                                   fn -> first_serve(client) end)
     :ok = :gen_tcp.controlling_process(client, pid)
     loop_acceptor(socket)
   end
 
   defp first_serve(socket) do
-    write_line(socket, """
-\x1B[33m      .-  _             _  -.\r
-     /   /  .         .  \\   \\ \x1B[35m    .   .     o\r
-\x1B[33m    (   (  (  \x1B[36m (-o-) \x1B[33m  )  )   ) \x1B[35m   |   |,---...    ,,---.,---.,---.,---.\r
-\x1B[33m     \\   \\_ ` \x1B[36m  |x|\x1B[33m   ` _/   /  \x1B[35m   |   ||   || \\  / |---'|    `---.,---|\r
-\x1B[33m      `-      \x1B[36m  |x|\x1B[33m        -`   \x1B[35m   `---'`   '`  `'  `---'`    `---'`---^\r
-              \x1B[36m  |x|\x1B[39m\r
-\r
-    Enter your nickname:\r
-""")
+    IO.Inspect Universa.Core.EntityBuilder.build("system/player.yml") #TODO: Make people able to find this thingy back again!
     serve(socket, nil)
   end
 
