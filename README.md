@@ -1,4 +1,4 @@
-![Universa](https://github.com/OpenSeltcana/universa/raw/staging/doc/logo.png)
+![Universa](https://github.com/OpenSeltcana/universa_core/raw/staging/doc/logo.png)
 =========
 Universa is a Multi User Dungeon codebase written in Elixir, designed for scalability and extensiblity.
 
