@@ -12,7 +12,7 @@ defmodule UniversaCore.Mixfile do
 			description: description(),
 			package: package(),
 			name: "Universa Core",
-			source_url: "https://github.com/OpenSeltcana/universa_core"
+			source_url: "https://github.com/OpenSeltcana/universa_core",
 			docs: [main: "Universa Core",
 						 extras: ["README.md"]]
     ]
