@@ -3,10 +3,10 @@ defmodule Dice do
   Dice is a simple (mostly) D&D compatible dice rolling mechanism that makes use
   of Rnum.random for random die result generation.
 
-  All seven dice from the standard off the shelf set is available using atoms
-  to describe their type:
+  All seven dice from the standard off the shelf (as well as some others) set is
+  available using atoms to describe their type:
 
-    :d4, :d6 :d8, :d10, :d12, :d00
+    :d4, :d6 :d8, :d10, :d12, :d00, :percentile, :coin
 
   To roll a d20, simply:
     roll(:d20)
@@ -25,13 +25,22 @@ defmodule Dice do
 
 """
 
+  @doc """
+    Roll one die explicitly, returning an integer
+    """
+  def roll_one(type), do: hd roll(1, type)
+
+  @doc """
+    Roll one die implicitly, returning a list with an integer
+    """
   def roll(type), do: roll(1, type)
+
+  @doc """
+  Roll one or multiple dice, returning a list
+  """
   def roll(count \\ 2, type \\ :d20), do: roll(count, type, [])
   def roll(0, type, acc), do: acc
-
-  def roll(count, type, acc) do
-    roll(count - 1, type, [ roll_die(type) | acc ])
-  end
+  def roll(count, type, acc), do: roll(count - 1, type, [ roll_die(type) | acc ])
 
   def roll_die(:d4),   do: Enum.random(1..4)
   def roll_die(:d6),   do: Enum.random(1..6)
