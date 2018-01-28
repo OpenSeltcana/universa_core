@@ -1,4 +1,4 @@
-defmodule Universa.Network.ListenServer do
+defmodule Universa.Core.NetworkServer do
   @moduledoc """
   This is the actual TCP server, accepting connections and spawning a new Task for every open connection.
   """

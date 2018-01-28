@@ -7,7 +7,7 @@ defmodule Universa.Core do
   defp children(), do: []
   defp options(),  do: [strategy: :one_for_one, name: UniversaCore.Supervisor]
 
-  def launch(parser \\ UniversaCore.) do
+  def launch(parser \\ Universa.Core.Parser.That.Aint.There) do
     :world
   end
 end

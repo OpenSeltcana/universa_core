@@ -30,7 +30,10 @@ defmodule UniversaCore.Mixfile do
   defp deps do
     [
 			{:ex_doc, "~> 0.16", only: :dev, runtime: false},
-			{:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false}
+			{:credo, "~> 0.9.0-rc1", only: [:dev, :test], runtime: false},
+
+      { :uuid, "~> 1.1" }, # Generate UUID's to identify
+      { :yaml_elixir, "~> 1.3.1" }, # Reading and writing templates
     ]
   end
 
