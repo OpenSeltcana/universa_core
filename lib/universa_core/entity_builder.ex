@@ -14,16 +14,27 @@ defmodule Universa.Core.EntityBuilder do
     template = YamlElixir.read_from_file path
     components = get_components_map()
 
-    Enum.into(template, %{unresolved: false}, fn {key, value} ->
+    new_template = Enum.into(template, %{unresolved: false}, fn {key, value} ->
       if Map.has_key?(components, key) do
         {key, Kernel.apply(Map.get(components, key), :new, [value])}
       else
         {:unresolved, true}
       end
     end)
+
+    # Do inheritance after
+    if Map.has_key?(template, "inherit") do
+      Enum.flat_map(Map.get(template, "inherit"), fn rel_path ->
+        template_to_location Path.expand(rel_path, Path.dirname(path))
+      end)
+      |> Map.new
+      |> Map.merge(new_template)
+    else
+      new_template
+    end
   end
 
-  defp get_components_map() do
+  defp get_components_map do
     get_modules()
       |> Enum.map(&String.to_atom(&1))
       |> Enum.filter(fn(module) ->
@@ -44,8 +55,8 @@ defmodule Universa.Core.EntityBuilder do
   # Thanks so much for this, took it from:
   # https://github.com/elixir-lang/elixir/master/lib/iex/lib/iex/autocomplete.ex
 
-  defp get_modules() do
-    modules = Enum.map(:code.all_loaded(), &Atom.to_string(elem(&1, 0)))
+  defp get_modules do
+    modules = Enum.map(:code.all_loaded, &Atom.to_string(elem(&1, 0)))
 
     case :code.get_mode() do
       :interactive -> modules ++ get_modules_from_applications()

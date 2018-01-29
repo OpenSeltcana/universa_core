@@ -1,5 +1,6 @@
 defmodule Universa.Core.Component do
-  # A little hack to convert @component_key to a function (because attributes are gone after compile, functions arent)
+  # A little hack to convert @component_key to a function (because attributes
+  # are gone after compile, functions arent)
 
   defmacro __using__(_options) do
     quote location: :keep do

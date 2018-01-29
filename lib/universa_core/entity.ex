@@ -59,6 +59,6 @@ defmodule Universa.Core.Entity do
 
   @spec component_to_key(component) :: String.t
   defp component_to_key(component) do
-    component.__struct__ |> Atom.to_string
+    component.__struct__.component_key
   end
 end

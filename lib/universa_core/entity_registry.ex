@@ -1,6 +1,7 @@
 defmodule Universa.Core.EntityRegistry do
   @moduledoc """
-    The `EntityRegistry` module is a wrapper around the `Registry` started by `Universa.Core.Supervisor`
+    The `EntityRegistry` module is a wrapper around the `Registry` started by
+     `Universa.Core.Supervisor`
   """
 
   @typedoc "An entity UUID"
@@ -9,7 +10,8 @@ defmodule Universa.Core.EntityRegistry do
   @type entity :: Universa.Core.Entity.t
 
   @doc "Alias for adding a new Entity to the EntityRegistry."
-  @spec spawn_entity(entity) :: {:ok, pid} | {:error, {:already_registered, pid}}
+  @spec spawn_entity(entity) ::
+                              {:ok, pid} | {:error, {:already_registered, pid}}
   def spawn_entity(entity) do
     Universa.Core.Entity.start_link(via_tuple(entity.id.value))
   end
