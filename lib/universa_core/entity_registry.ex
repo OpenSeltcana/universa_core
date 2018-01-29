@@ -13,7 +13,9 @@ defmodule Universa.Core.EntityRegistry do
   @spec spawn_entity(entity) ::
                               {:ok, pid} | {:error, {:already_registered, pid}}
   def spawn_entity(entity) do
-    Universa.Core.Entity.start_link(via_tuple(entity.id.value))
+    IO.inspect entity
+    DynamicSupervisor.start_child(Universa.Core.EntitySupervisor,
+                  {Universa.Core.Entity, {entity, via_tuple(entity.id.value)}})
   end
 
   @doc "Alias for getting an Entity from the EntityRegistry."
@@ -30,6 +32,13 @@ defmodule Universa.Core.EntityRegistry do
   @spec remove_entity(uuid) :: :ok
   def remove_entity(id) do
     Registry.unregister(Universa.Core.EntityRegistryServer, id)
+  end
+
+  @doc "Gets a list of all entities in the registry."
+  @spec entities :: list(pid)
+  def entities do
+    Supervisor.which_children(Universa.Core.EntitySupervisor)
+      |> Enum.map(fn {_, pid, _, _} -> pid end)
   end
 
   @spec via_tuple(uuid) :: {:via, Registry, {atom, String.t}}

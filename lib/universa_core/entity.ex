@@ -7,14 +7,14 @@ defmodule Universa.Core.Entity do
   defstruct id: nil, components: %{}
 
   @type id :: String.t
-  @type component :: Universa.Core.Component.t
+  @type component :: map
   @type t :: %Universa.Core.Entity {
     id: Universa.Core.UUID.t,
     components: map
   }
 
-  def start_link(name) do
-    Agent.start_link(fn -> new() end, name: name)
+  def start_link({entity, name}) do
+    Agent.start_link(fn -> entity end, name: name)
   end
 
   @doc "Creates a new Entity with given `UUID`"

@@ -24,17 +24,18 @@ defmodule Universa.Core.NetworkServer do
 
   defp first_serve(socket) do
     ent = Universa.Core.EntityBuilder.build("system/player.yml")
-    Universa.Core.Entity.add(ent, Universa.Core.Component.Listener.new(socket))
+    ent = Universa.Core.Entity.add(ent, Universa.Core.Component.Listener.new(socket))
     Universa.Core.EntityRegistry.spawn_entity(ent)
-    serve(socket, nil)
+    serve(socket, ent.id.value)
   end
 
-  defp serve(socket, info) do
-    info = case read_line(socket) do
-      {:ok, data} -> Universa.Network.Parser.parse(data, info, socket)
+  defp serve(socket, entity_uuid) do
+    case read_line(socket) do
+      {:ok, data} ->
+        Universa.Core.CommandParser.parse(entity_uuid, data)
+        serve(socket, entity_uuid)
+      {:error, :closed} -> :stop
     end
-
-    serve(socket, info)
   end
 
   defp read_line(socket) do
