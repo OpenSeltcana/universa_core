@@ -11,7 +11,7 @@ defmodule Universa.Core.Supervisor do
   #Spawns an acceptor and a Supervisor for every open connection.
   def init(:ok) do
     children = [
-      Universa.Core.EntityRegistry,
+      {Registry, keys: :unique, name: Universa.Core.EntityRegistryServer},
       {Task.Supervisor, name: Universa.Core.NetworkConnections},
       Supervisor.child_spec({Task, fn ->
             Universa.Core.NetworkServer.accept(4040) end}, restart: :permanent)

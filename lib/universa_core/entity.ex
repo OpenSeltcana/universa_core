@@ -1,4 +1,6 @@
 defmodule Universa.Core.Entity do
+  use Agent
+
   alias Universa.Core.Entity
   alias Universa.Core.UUID
 
@@ -10,6 +12,10 @@ defmodule Universa.Core.Entity do
     id: Universa.Core.UUID.t,
     components: map
   }
+
+  def start_link(name) do
+    Agent.start_link(fn -> new() end, name: name)
+  end
 
   @doc "Creates a new Entity with given `UUID`"
   @spec new :: t

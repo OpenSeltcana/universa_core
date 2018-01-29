@@ -25,7 +25,7 @@ defmodule Universa.Core.NetworkServer do
   defp first_serve(socket) do
     ent = Universa.Core.EntityBuilder.build("system/player.yml")
     Universa.Core.Entity.add(ent, Universa.Core.Component.Listener.new(socket)) # TODO: SHIT I NEED COMPONENTS
-    EntityRegistry.spawn_entity(ent)
+    Universa.Core.EntityRegistry.spawn_entity(ent)
     serve(socket, nil)
   end
 
