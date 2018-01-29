@@ -22,13 +22,19 @@ defmodule Universa.Core.EntityBuilder do
       end
     end)
 
-    # Do inheritance after
+    # Handle the "inherit" keyword
     if Map.has_key?(template, "inherit") do
-      Enum.flat_map(Map.get(template, "inherit"), fn rel_path ->
-        template_to_location Path.expand(rel_path, Path.dirname(path))
-      end)
-      |> Map.new
-      |> Map.merge(new_template)
+      value = Map.get(template, "inherit")
+      if is_list value do
+        Enum.flat_map(value, fn rel_path ->
+          template_to_location Path.expand(rel_path, Path.dirname(path))
+        end)
+        |> Map.new
+        |> Map.merge(new_template)
+      else
+        Map.merge(template_to_location(Path.expand(value, Path.dirname(path))),
+                                                                  new_template)
+      end
     else
       new_template
     end
