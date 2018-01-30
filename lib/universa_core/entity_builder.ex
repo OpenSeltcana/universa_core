@@ -46,14 +46,14 @@ defmodule Universa.Core.EntityBuilder do
       |> Enum.filter(fn(module) ->
           # If compiled, read the function
           if Code.ensure_compiled?(module) do
-            :erlang.function_exported(module, :component_key, 0)
+            :erlang.function_exported(module, :component_type, 0)
           # If not compiled read the attribute
           else
-            module.get_attribute(module, :component_key)
+            module.get_attribute(module, :component_type)
           end
         end)
       |> Enum.map(fn(module) ->
-          {Kernel.apply(module, :component_key, []), module}
+          {Kernel.apply(module, :component_type, []), module}
         end)
       |> Map.new
   end

@@ -7,7 +7,8 @@ defmodule Universa.Core.Component do
   At the top of your module add the following two lines:
   ```
     use Universa.Core.Component
-    @component_key "test"
+    @type "name"
+    @value "Unknown"
   ```
   to have the line `test: "A test"` passed to your `Component.new/1` function.
   """
@@ -26,8 +27,18 @@ defmodule Universa.Core.Component do
 
   defmacro __before_compile__(_env) do
     quote location: :keep do
-      def component_key do
-        @component_key
+      defstruct @component_value
+
+      def component_type do
+        @component_type
+      end
+
+      def new(value) do
+        if is_map(value) do
+          struct(__MODULE__, value)
+        else
+          value
+        end
       end
     end
   end
