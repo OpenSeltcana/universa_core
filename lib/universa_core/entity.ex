@@ -2,7 +2,6 @@ defmodule Universa.Core.Entity do
   use Agent
 
   alias Universa.Core.Entity
-  alias Universa.Core.UUID
 
   defstruct id: nil, components: %{}
 
@@ -19,13 +18,13 @@ defmodule Universa.Core.Entity do
 
   @doc "Creates a new Entity with given `UUID`"
   @spec new :: t
-  def new, do: %Entity{id: UUID.new}
+  def new, do: %Entity{ id: UUID.uuid1 }
   @spec new(map) :: t
-  def new(components), do: %Entity{id: UUID.new, components: components}
+  def new(components), do: %Entity{ id: UUID.uuid1, components: components }
 
   @doc "Adds a component to an entity, errors if the component already exists."
-  @spec add(t, component) :: t
-  def add(entity, component) do
+  @spec add_component(t, component) :: t
+  def add_component(entity, component) do
     Map.update!(entity, :components, fn (_) -> Map.put_new(entity.components,
       component_to_key(component),
       component) end)

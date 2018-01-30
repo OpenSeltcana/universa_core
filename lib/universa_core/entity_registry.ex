@@ -14,8 +14,10 @@ defmodule Universa.Core.EntityRegistry do
                               {:ok, pid} | {:error, {:already_registered, pid}}
   def spawn_entity(entity) do
     IO.inspect entity
-    DynamicSupervisor.start_child(Universa.Core.EntitySupervisor,
-                  {Universa.Core.Entity, {entity, via_tuple(entity.id.value)}})
+    {:ok, pid} = DynamicSupervisor.start_child(Universa.Core.EntitySupervisor,
+                  {Universa.Core.Entity, {entity, via_tuple( entity.id )}})
+
+    entity # If successful, throw back the entity we just spawned, not the PID
   end
 
   @doc "Alias for getting an Entity from the EntityRegistry."

@@ -23,10 +23,13 @@ defmodule Universa.Core.NetworkServer do
   end
 
   defp first_serve(socket) do
-    ent = Universa.Core.EntityBuilder.build("system/player.yml")
-    ent = Universa.Core.Entity.add(ent, Universa.Core.Component.Listener.new(socket))
-    Universa.Core.EntityRegistry.spawn_entity(ent)
-    serve(socket, ent.id.value)
+    listener_path = Universa.Core.Component.Listener.new(socket)
+
+    entity = Universa.Core.EntityBuilder.build("system/player.yml")
+    |> Universa.Core.Entity.add_component(listener_path)
+    |> Universa.Core.EntityRegistry.spawn_entity()
+
+    serve(socket, entity.id)
   end
 
   defp serve(socket, entity_uuid) do
