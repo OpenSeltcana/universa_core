@@ -35,10 +35,29 @@ defmodule Universa.Core.Component do
 
       def new(value) do
         if is_map(value) do
-          struct(__MODULE__, value)
+          map = value
+          #TODO: String.to_atom is meh?
+          |> Enum.map(fn {x, y} -> {String.to_atom(x), y} end)
+          |> Map.new
+          struct(__MODULE__, map)
         else
           value
         end
+      end
+    end
+  end
+
+  defmacro type(type) do
+    quote do
+      @component_type unquote(type)
+    end
+  end
+
+  defmacro value(value) do
+    quote do
+      case is_list(unquote(value)) do
+        true -> @component_value unquote(value)
+        false -> @component_value value: unquote(value)
       end
     end
   end
