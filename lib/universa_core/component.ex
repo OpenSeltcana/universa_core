@@ -3,7 +3,7 @@ defmodule Universa.Core.Component do
   This module marks a module as a `Component` to be used for the YAML importer.
 
   ## Example Usage
-  
+
   At the top of your module add the following two lines:
   ```
     use Universa.Core.Component
@@ -13,6 +13,8 @@ defmodule Universa.Core.Component do
   """
   # A little hack to convert @component_key to a function (because attributes
   # are gone after compile, functions arent)
+
+  @callback new() :: any
 
   defmacro __using__(_options) do
     quote location: :keep do

@@ -37,27 +37,27 @@ defmodule Universa.Core.Entity do
   end
 
   @doc "Removes a component from an entity."
-  @spec remove(t, component) :: t
-  def remove(entity, component) do
+  @spec remove_component(t, component) :: t
+  def remove_component(entity, component) do
     Map.update!(entity, :components, fn (_) -> Map.delete(entity.components,
       component_to_key(component)) end)
   end
 
   @doc "Sets a component to specified value, should be if possible."
-  @spec remove(t, component) :: t
+  @spec set(t, component) :: t
   def set(entity, component) do
-    update(entity, component, fn(_) -> component end)
+    update_component(entity, component, fn(_) -> component end)
   end
 
   @doc "Applies changes to a `Component` in this `Entity` using a Function."
-  @spec update(t, component, fun) :: t
-  def update(entity, component, update_fn) do
+  @spec update_component(t, component, fun) :: t
+  def update_component(entity, component, update_fn) do
     Map.update!(entity, :components, fn (_) -> Map.update!(entity.components,
-      component_to_key(component), update_fn) end)
+      component, update_fn) end)
   end
 
   @spec component_to_key(component) :: String.t
   defp component_to_key(component) do
-    component.__struct__.component_key
+    component.component_key
   end
 end
