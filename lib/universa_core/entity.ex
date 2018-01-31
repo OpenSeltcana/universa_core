@@ -25,24 +25,22 @@ defmodule Universa.Core.Entity do
   end
 
   @doc "Adds a component to an entity, errors if the component already exists."
-  @spec add_component(t, component) :: t
-  def add_component(entity, component) do
+  def add_component(entity, component, value) do
     Map.update!(entity, :components, fn (_) -> Map.put_new(entity.components,
-      elem(component, 0),
-      elem(component, 1)) end)
+                                                          component, value) end)
   end
 
   @doc "Checks if an entity has a component of specified type."
   @spec has(t, component) :: boolean
   def has(entity, component) do
-    Map.has_key?(entity.components, elem(component, 0))
+    Map.has_key?(entity.components,component)
   end
 
   @doc "Removes a component from an entity."
   @spec remove_component(t, component) :: t
   def remove_component(entity, component) do
     Map.update!(entity, :components, fn (_) -> Map.delete(entity.components,
-      elem(component, 0)) end)
+                                                                component) end)
   end
 
   @doc "Sets a component to specified value, should be if possible."

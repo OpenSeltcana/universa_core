@@ -23,10 +23,12 @@ defmodule Universa.Core.NetworkServer do
   end
 
   defp first_serve(socket) do
+    input_path = Universa.Core.Component.Input.new("")
     listener_path = Universa.Core.Component.Listener.new(socket)
 
     entity = Universa.Core.EntityBuilder.build("system/player.yml")
-    |> Universa.Core.Entity.add_component(listener_path)
+    |> Universa.Core.Entity.add_component("int_listener", listener_path)
+    |> Universa.Core.Entity.add_component("input", input_path)
     |> Universa.Core.EntityRegistry.spawn_entity()
 
     serve(socket, entity.id)
@@ -35,7 +37,8 @@ defmodule Universa.Core.NetworkServer do
   defp serve(socket, entity_uuid) do
     case read_line(socket) do
       {:ok, data} ->
-        Universa.Core.CommandParser.parse(entity_uuid, data)
+        Universa.Core.EntityRegistry.update_entity_component(entity_uuid,
+                                            "input", fn _old_input -> data end)
         serve(socket, entity_uuid)
       {:error, :closed} -> :stop
     end
@@ -43,9 +46,5 @@ defmodule Universa.Core.NetworkServer do
 
   defp read_line(socket) do
     :gen_tcp.recv(socket, 0)
-  end
-
-  defp write_line(socket, text) do
-    :gen_tcp.send(socket, text)
   end
 end

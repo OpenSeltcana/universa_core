@@ -9,13 +9,23 @@ defmodule Universa.Core.EntityRegistry do
   @typedoc "An Entity itself"
   @type entity :: Universa.Core.Entity.t
 
+  def spawn_entity() do
+    entity = Universa.Core.Entity.new()
+    {:ok, _pid} = DynamicSupervisor.start_child(Universa.Core.EntitySupervisor,
+                  {Universa.Core.Entity, {entity, via_tuple( entity.id )}})
+    entity.id
+  end
+
   @doc "Alias for adding a new Entity to the EntityRegistry."
   @spec spawn_entity(entity) ::
                               {:ok, pid} | {:error, {:already_registered, pid}}
   def spawn_entity(entity) do
-    IO.inspect entity
-    {:ok, pid} = DynamicSupervisor.start_child(Universa.Core.EntitySupervisor,
+    {:ok, _pid} = DynamicSupervisor.start_child(Universa.Core.EntitySupervisor,
                   {Universa.Core.Entity, {entity, via_tuple( entity.id )}})
+
+    Enum.each(entity.components, fn {key, value} ->
+      Universa.Core.SystemRegistry.event_component_create(entity.id, key)
+    end)
 
     entity # If successful, throw back the entity we just spawned, not the PID
   end
@@ -24,10 +34,39 @@ defmodule Universa.Core.EntityRegistry do
   @spec get_entity(uuid) :: [{pid, entity}]
   def get_entity(id), do: Agent.get(via_tuple(id), fn entity -> entity end)
 
-  @doc "Alias for changing an Entity in the EntityRegistry."
-  @spec update_entity(entity) :: {term, term} | :error
-  def update_entity(entity) do
-    Agent.update(via_tuple(entity.id.value), fn _old_ent -> entity end)
+  def add_entity_component(uuid, component, value) do
+    Agent.update(via_tuple(uuid), fn entity ->
+      IO.inspect entity
+      Map.put(entity, component, value)
+    end)
+    Universa.Core.SystemRegistry.event_component_create(uuid, component)
+    uuid
+  end
+
+  def get_entity_component(uuid, component) do
+    Agent.get(via_tuple(uuid), fn entity ->
+      IO.inspect({entity, component})
+      Map.get(entity.components, component)
+    end)
+  end
+
+  def update_entity_component(uuid, component, fun_change) do
+    Agent.update(via_tuple(uuid), fn entity ->
+      Map.update(entity, :components, 0, fn components ->
+        Map.update(components, component,
+                              Map.get(entity.components, component), fun_change)
+      end)
+    end)
+    Universa.Core.SystemRegistry.event_component_change(uuid, component)
+    uuid
+  end
+
+  def remove_entity_component(uuid, component) do
+    Agent.update(via_tuple(uuid), fn entity ->
+      Map.delete(entity.components, component)
+    end)
+    Universa.Core.SystemRegistry.event_component_remove(uuid, component)
+    uuid
   end
 
   @doc "Alias for removing an Entity from the EntityRegistry."
