@@ -28,3 +28,13 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+
+config :universa_core, Universa.Core.Repo,
+  adapter: Ecto.Adapters.Postgres,
+    ecto_repos: [Universa.Core.Repo],
+    database: "universa",
+  username: "universa",
+  password: "universa",
+  hostname: "localhost"
+  # OR use a URL to connect instead
+  # url: "postgres://postgres:postgres@localhost/ecto_simple"
