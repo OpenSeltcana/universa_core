@@ -1,9 +1,9 @@
 defmodule Universa.Core.System.OutputSender do
   use Universa.Core.System
 
-  subscribe "output"
+  subscribe "io"
 
-  def handle(entity_uuid, "output", value, :component_changed) do
+  def handle(entity_uuid, "io", value, :player_output) do
     :gen_tcp.send(find_uuid_socket(entity_uuid), value)
   end
 

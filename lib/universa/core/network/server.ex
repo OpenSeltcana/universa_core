@@ -20,12 +20,7 @@ defmodule Universa.Core.Network.Server do
     entity_uuid = UUID.uuid1()
     Registry.register(Universa.Core.Network.Registry, entity_uuid, socket)
 
-    input_path = Universa.Core.Component.Input.new("")
-    output_path = Universa.Core.Component.Output.new("")
-
-    entity_uuid
-    |> Universa.Core.Entity.add_component("input", input_path)
-    |> Universa.Core.Entity.add_component("output", output_path)
+    Universa.Core.EventSystem.event_custom(entity_uuid, "io", [], :player_connect)
 
     serve(socket, entity_uuid)
   end
@@ -33,7 +28,7 @@ defmodule Universa.Core.Network.Server do
   defp serve(socket, entity_uuid) do
     case read_line(socket) do
       {:ok, data} ->
-        Universa.Core.Entity.set_component(entity_uuid, "input", data)
+        Universa.Core.EventSystem.event_custom(entity_uuid, "io", data, :player_input)
         serve(socket, entity_uuid)
       {:error, :closed} -> :stop
     end

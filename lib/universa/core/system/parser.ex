@@ -1,9 +1,10 @@
 defmodule Universa.Core.System.Parser do
   use Universa.Core.System
 
-  subscribe "input"
+  subscribe "io"
 
-  def handle(_entity, "input", value, :component_changed) do
-    IO.write "A player typed: \"#{value}\""
+  def handle(entity_uuid, "io", value, :player_input) do
+    IO.write "#{entity_uuid} typed: \"#{value}\"\r\n"
+    Universa.Core.EventSystem.event_custom(entity_uuid, "io", "What?\r\n", :player_output)
   end
 end
