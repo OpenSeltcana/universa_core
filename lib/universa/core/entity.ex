@@ -7,7 +7,7 @@ defmodule Universa.Core.Entity do
 		{:ok, _} = %Universa.Core.Component{
 					  type: type, entity_uuid: entity_uuid, value: value}
 		|> Universa.Core.Repo.insert
-    Universa.Core.EventSystem.event_component_create(entity_uuid, type)
+    Universa.Core.EventSystem.event_component_create(entity_uuid, type, value)
 		entity_uuid
 	end
 
@@ -96,7 +96,8 @@ defmodule Universa.Core.Entity do
 
   @spec remove_component(String.t, String.t) :: String.t
   def remove_component(entity_uuid, type) do
-    {:ok, _} = by_uuid_and_component(entity_uuid, type)
+    {:ok, _} = Universa.Core.Component
+    |> Universa.Core.Repo.get_by(type: type, entity_uuid: entity_uuid)
     |> Universa.Core.Repo.delete
     Universa.Core.EventSystem.event_component_remove(entity_uuid, type)
     entity_uuid
@@ -114,7 +115,7 @@ defmodule Universa.Core.Entity do
 		|> Universa.Core.Component.changeset(%{"value" => safe_value})
     |> Universa.Core.Repo.update
 
-    Universa.Core.EventSystem.event_component_change(entity_uuid, type)
+    Universa.Core.EventSystem.event_component_change(entity_uuid, type, value)
 		entity_uuid
 	end
 end

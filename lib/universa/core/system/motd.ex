@@ -3,8 +3,8 @@ defmodule Universa.Core.System.MOTD do
 
   subscribe "input"
 
-  def handle(entity_uuid, "input", :component_create) do
-    Universa.Core.Network.Connection.send(entity_uuid, """
+  def handle(entity_uuid, "input", _value, :component_create) do
+    Universa.Core.Entity.set_component(entity_uuid, "output", """
 \x1B[33m      .-  _             _  -.\r
      /   /  .         .  \\   \\ \x1B[35m    .   .     o\r
 \x1B[33m    (   (  (  \x1B[36m (-o-) \x1B[33m  )  )   ) \x1B[35m   |   |,---...    ,,---.,---.,---.,---.\r

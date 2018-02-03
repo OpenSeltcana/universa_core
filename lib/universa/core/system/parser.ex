@@ -3,7 +3,7 @@ defmodule Universa.Core.System.Parser do
 
   subscribe "input"
 
-  def handle(_entity, "input", :component_changed) do
-    IO.write "A player typed something"
+  def handle(_entity, "input", value, :component_changed) do
+    IO.write "A player typed: \"#{value}\""
   end
 end

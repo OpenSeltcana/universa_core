@@ -21,8 +21,11 @@ defmodule Universa.Core.Network.Server do
     Registry.register(Universa.Core.Network.Registry, entity_uuid, socket)
 
     input_path = Universa.Core.Component.Input.new("")
+    output_path = Universa.Core.Component.Output.new("")
 
-    Universa.Core.Entity.add_component(entity_uuid, "input", input_path)
+    entity_uuid
+    |> Universa.Core.Entity.add_component("input", input_path)
+    |> Universa.Core.Entity.add_component("output", output_path)
 
     serve(socket, entity_uuid)
   end

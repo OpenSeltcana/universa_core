@@ -14,7 +14,7 @@ defmodule Universa.Core.System do
       end
 
       # Catch_all to avoid errors when not subscribed
-      def handle(_, _, _), do: nil
+      def handle(_, _, _, _), do: nil
     end
   end
 
